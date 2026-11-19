@@ -3,20 +3,21 @@ FROM python:3.11-slim
 
 WORKDIR /app
 
-# Copy dependency file first
+# Install dependencies
 COPY requirements.txt .
-
-# Install Python dependencies
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Copy project files
+# Install Gunicorn
+RUN pip install --no-cache-dir gunicorn
+
+# Copy application files
 COPY . .
 
-# Download required NLTK datasets
+# Download NLTK datasets
 RUN python -c "import nltk; nltk.download('stopwords'); nltk.download('wordnet'); nltk.download('omw-1.4')"
 
-# Flask application port
+# Application port
 EXPOSE 5000
 
-# Start Flask application
-CMD ["python", "flask_app/app.py"]
+# Start Flask using Gunicorn
+CMD ["gunicorn", "--workers", "2", "--bind", "0.0.0.0:5000", "flask_app.app:app"]

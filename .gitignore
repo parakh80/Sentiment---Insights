@@ -8,6 +8,18 @@ __pycache__/
 
 data/*
 
+
+
+.git
+.github
+__pycache__
+*.pyc
+.venv
+venv
+.env
+.ipynb_checkpoints
+
+
 # Distribution / packaging
 .Python
 build/
